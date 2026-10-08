@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>Verdict</title>
+  <meta name="description" content="Practice decision-making with random yes/no questions.">
+  <meta name="theme-color" content="#f6f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14191b" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Verdict">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main id="app">
+
+    <!-- PLAY TAB -->
+    <section id="tab-play" class="tab active" aria-label="Play">
+
+      <!-- Start screen -->
+      <div id="start" class="screen active">
+        <header class="brand">
+          <h1>Verdict</h1>
+          <p class="sub">Yes or no. Decide.</p>
+        </header>
+
+        <div class="mode-picker" role="radiogroup" aria-label="Mode">
+          <button class="mode" data-mode="quick" role="radio" aria-checked="true">
+            <span class="mode-name">Quick-fire</span>
+            <span class="mode-desc">Beat the clock. Trust your gut.</span>
+          </button>
+          <button class="mode" data-mode="reflect" role="radio" aria-checked="false">
+            <span class="mode-name">Reflect</span>
+            <span class="mode-desc">No timer. Add a note on why.</span>
+          </button>
+        </div>
+
+        <p id="start-meta" class="meta"></p>
+        <button id="btn-start" class="primary">Start</button>
+      </div>
+
+      <!-- Question screen -->
+      <div id="play" class="screen">
+        <div class="play-top">
+          <span id="q-cat" class="chip"></span>
+          <button id="btn-end" class="link">End</button>
+        </div>
+
+        <div id="timer" class="timer"><div id="timer-fill"></div></div>
+
+        <div class="q-wrap">
+          <p id="q-revisit" class="revisit hidden"></p>
+          <h2 id="q-text"></h2>
+          <p id="q-feedback" class="feedback"></p>
+        </div>
+
+        <div id="answer-row" class="answer-row">
+          <button id="btn-no" class="ans no">No</button>
+          <button id="btn-yes" class="ans yes">Yes</button>
+        </div>
+
+        <div id="note-row" class="note-row hidden">
+          <textarea id="note" rows="2" maxlength="280" placeholder="Why? (optional)"></textarea>
+          <button id="btn-next" class="primary">Next</button>
+        </div>
+
+        <div class="tally" aria-live="polite">
+          <span><b id="t-count">0</b> answered</span>
+          <span><b id="t-yes">0</b> yes</span>
+          <span><b id="t-no">0</b> no</span>
+          <span id="t-to-wrap"><b id="t-to">0</b> timeouts</span>
+        </div>
+      </div>
+
+      <!-- Session summary -->
+      <div id="summary" class="screen">
+        <h2>Session done</h2>
+        <div id="summary-body"></div>
+        <button id="btn-again" class="primary">Play again</button>
+      </div>
+    </section>
+
+    <!-- STATS TAB -->
+    <section id="tab-stats" class="tab" aria-label="Stats">
+      <h2 class="tab-title">Stats</h2>
+      <div id="stats-body"></div>
+    </section>
+
+    <!-- SETTINGS TAB -->
+    <section id="tab-settings" class="tab" aria-label="Settings">
+      <h2 class="tab-title">Settings</h2>
+
+      <div class="card">
+        <label class="row" for="set-timer">
+          <span>Quick-fire timer</span>
+          <b id="set-timer-val"></b>
+        </label>
+        <input id="set-timer" type="range" min="2" max="10" step="1">
+      </div>
+
+      <div class="card">
+        <div class="row"><span>Revisit old questions</span></div>
+        <div class="seg" id="set-revisit">
+          <button data-v="0">Off</button>
+          <button data-v="0.1">1 in 10</button>
+          <button data-v="0.2">1 in 5</button>
+        </div>
+        <p class="hint">Re-asks questions you answered at least a week ago, and flags it when your answer changes.</p>
+      </div>
+
+      <div class="card">
+        <div class="row">
+          <span>Categories</span>
+          <span>
+            <button class="link" id="cat-all">All</button>
+            <button class="link" id="cat-none">None</button>
+          </span>
+        </div>
+        <div id="set-cats" class="cat-list"></div>
+      </div>
+
+      <div class="card">
+        <div class="row"><span>Your data</span></div>
+        <p class="hint">Everything is stored on this device only. Export a backup now and then.</p>
+        <div class="btn-row">
+          <button id="btn-export" class="secondary">Export backup</button>
+          <button id="btn-import" class="secondary">Import backup</button>
+          <input id="import-file" type="file" accept="application/json,.json" hidden>
+        </div>
+        <button id="btn-reset" class="danger">Erase all history</button>
+      </div>
+
+      <p class="hint center" id="version"></p>
+    </section>
+
+  </main>
+
+  <nav class="tabbar" aria-label="Tabs">
+    <button data-tab="play" class="active">Play</button>
+    <button data-tab="stats">Stats</button>
+    <button data-tab="settings">Settings</button>
+  </nav>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
